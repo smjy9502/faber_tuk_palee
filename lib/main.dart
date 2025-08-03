@@ -37,27 +37,26 @@ class _MyAppState extends State<MyApp> {
           userAgent.contains('android') ||
           userAgent.contains('iphone');
 
+      // 1. 모바일이 아니면 에러
       if (!mobile) {
-        // 모바일이 아니면 무조건 에러
         access = false;
+        // sessionStorage 초기화
+        html.window.sessionStorage.remove('entry_visited');
       } else {
-        // 모바일에서만 인증 로직
-        if (uri.queryParameters.isNotEmpty) {
-          // 첫 진입: 파라미터 저장 + 주소창 정리
-          final paramString = uri.queryParameters.entries.map((e) => '${e.key}=${e.value}').join('&');
-          html.window.sessionStorage['params'] = paramString;
-
+        final storedOnce = html.window.sessionStorage['entry_visited'];
+        if (uri.queryParameters.length == 1 &&
+            uri.queryParameters.containsKey('no') &&
+            int.tryParse(uri.queryParameters['no'] ?? '') != null &&
+            (storedOnce == null || storedOnce != 'true')) {
+          // 2. 정상적 첫 진입(매개변수: no=숫자) & 최초 1회 허용
+          html.window.sessionStorage['entry_visited'] = 'true'; // 방문 기록
           // 주소창에서 파라미터 제거
           final cleanUrl = uri.removeFragment().replace(queryParameters: {}).toString();
           html.window.history.replaceState(null, '', cleanUrl);
-
           access = true;
         } else {
-          // 파라미터 없을 때 세션스토리지 확인
-          final storedParams = html.window.sessionStorage['params'];
-          if (storedParams != null && storedParams.isNotEmpty) {
-            access = true;
-          }
+          // 3. 재접속, 새로고침, 잘못된 파라미터 등: 에러!
+          access = false;
         }
       }
     }
@@ -79,7 +78,6 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     }
-
     // 허용된 모바일, 정상 접근: 팔이 화면
     if (_showPaleeScreen == true && _isMobile) {
       return const MaterialApp(

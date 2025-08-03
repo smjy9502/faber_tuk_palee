@@ -66,7 +66,7 @@ class _PaleeScreenState extends State<PaleeScreen> {
                 child: Text(
                   formattedDateTime,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 17,
                     letterSpacing: 2.0,
                     fontWeight: FontWeight.w600,

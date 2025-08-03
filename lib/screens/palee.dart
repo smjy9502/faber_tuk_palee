@@ -60,16 +60,16 @@ class _PaleeScreenState extends State<PaleeScreen> {
                   horizontal: 16,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.black54,
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   formattedDateTime,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 17,
                     letterSpacing: 2.0,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

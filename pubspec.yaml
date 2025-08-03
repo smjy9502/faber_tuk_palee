@@ -30,3 +30,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/abc.jpeg
+    - assets/images/locker.png
+    - assets/images/logo.webp
